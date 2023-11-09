@@ -1,0 +1,243 @@
+
+
+.all {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.container-search {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 0px;
+  width: 1200px;
+}
+
+.icon {
+  background-color: rgb(175, 107, 24);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  margin: 0px 10px;
+}
+
+.btn-icon {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(175, 107, 24);
+  background-color: rgb(175, 107, 24);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 90%;
+}
+
+#input-field {
+  padding-left: 40px;
+  height: 30px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.button-search {
+  position: absolute;
+  height: 30px;
+  width: 35px;
+  left: 1px;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: white;
+}
+
+#main-data {
+  display: block;
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 0px 50px;
+}
+
+.container-data {
+  display: inline-flex;
+  height: 90px;
+  width: 200px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 5px;
+  background-color: rgb(165, 163, 160);
+  border-color: rgb(17, 16, 16);
+  margin: 10px 5px 10px 6px;
+  padding: 5px;
+}
+
+.container-image {
+  width: 80px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  height: 90px;
+  width: 80px;
+  margin-top: 15px;
+  border-radius: 50%;
+  background-color: aliceblue;
+  float: left;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+  height: 100px;
+  width: 110px;
+}
+
+.btn-edit {
+  height: 25px;
+  width: 25px;
+  background-color: rgb(165, 163, 160);
+  font-size: medium;
+  border: none;
+}
+
+.btn-delete {
+  height: 25px;
+  width: 25px;
+  background-color: rgb(165, 163, 160);
+  font-size: medium;
+  border: none;
+}
+
+.button {
+  display: inline-flex;
+  margin: 5px;
+  background-color: rgb(165, 163, 160);
+  margin-left: 10px;
+}
+
+p {
+  text-align: left;
+  margin: 3px 0px;
+  font-size: 13px;
+}
+
+@media screen and (max-width: 1000px) {
+  .container-search {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    width: 100%;
+  }
+
+  /* #input-field {
+    padding-left: 30px;
+    height: 30px;
+    width: 80vw;
+  } */
+}
+
+/* @media screen and (max-width:660) {
+  #input-field {
+    padding-left: 30px;
+    height: 30px;
+    width: 75vw;
+  }
+} */
+
+@media screen and (max-width:470px) {
+  .container-search {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  /* #input-field {
+    padding-left: 30px;
+    height: 30px;
+    width: 70vw;
+  } */
+}
+
+
+
+@media (min-width:100px) and (max-width: 160px) {
+
+  .container-search {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+  }
+
+  /* #input-field {
+    padding-left: 30px;
+    height: 30px;
+    width: 60vw;
+  } */
+
+  #main-data {
+    padding: 0px;
+    display: block;
+    text-align: center;
+    margin-top: 50px;
+  }
+}
+
+/* ini landing page add */
+.container {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-add {
+  display: flex;
+  flex-direction: column;
+  margin: 150px 0px 0px 0px;
+}
+
+.input-add {
+  margin: 5px 0px;
+  border: 1px solid black;
+  border-radius: 3px;
+  height: 30px;
+  width: 400px;
+}
+
+.btn-add {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0px;
+}
+
+.btn-save {
+  width: 200px;
+  height: 30px;
+  border: none;
+  border-radius: 3px;
+  background-color: rgb(182, 159, 33);
+}
+
+.p-add {
+  text-align: center;
+  color: white;
+}
