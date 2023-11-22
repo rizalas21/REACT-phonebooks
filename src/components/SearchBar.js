@@ -1,15 +1,30 @@
 import { faArrowUpZA, faMagnifyingGlass, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import '../app.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Link } from 'react-router-dom'
 
-export default function PhItem() {
+function BtnIcon() {
+    return (
+        <button className="btn-icon">
+            <FontAwesomeIcon icon={faArrowUpZA} id="center" />
+        </button>
+    )
+}
+
+function BtnAdd() {
+    return (
+        <button className="btn-icon">
+            <FontAwesomeIcon icon={faUserPlus} />
+        </button>
+    )
+}
+
+export default function SearchBar() {
     return (
         <div className="all">
             <div className="container-search">
                 <div className="icon">
-                    <button className="btn-icon">
-                        <FontAwesomeIcon icon={faArrowUpZA} id="center" />
-                    </button>
+                    <BtnIcon />
                 </div>
                 <div className="input-container">
                     <button className="button-search">
@@ -18,9 +33,9 @@ export default function PhItem() {
                     <input type="text" aria-describedby="basic-addon1" id="input-field" />
                 </div>
                 <div className="icon">
-                    <button className="btn-icon">
-                        <FontAwesomeIcon icon={faUserPlus} />
-                    </button>
+                    <Link to={"/add"}>
+                        <BtnAdd />
+                    </Link>
                 </div>
             </div>
         </div>
