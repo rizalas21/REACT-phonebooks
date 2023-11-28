@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../app.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFloppyDisk, faPenToSquare, faSave, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 export default function PhoneItem({ user, remove, update }) {
@@ -20,7 +20,7 @@ export default function PhoneItem({ user, remove, update }) {
         return (
             <div className="container-data">
                 <div className="container-image">
-                    <img src={user.photo == null ? `/Defaultavatar.png` : user.photo} alt='not source' className="avatar" />
+                    <img src={user.avatar == null ? `/Defaultavatar.png` : `../images/${user.avatar}`} alt='not source' className="avatar" />
                 </div>
                 <div className="list" >
                     <input className='input' type="text" id="nameEdit" value={newData.name} onChange={(e) => setNewData({ ...newData, name: e.target.value })} />
@@ -35,8 +35,8 @@ export default function PhoneItem({ user, remove, update }) {
         return (
             <div className="container-data" key={user.name}>
                 <div className="container-image">
-                    <Link to={"/avatar"}>
-                        <img src={user.photo == null ? `/Defaultavatar.png` : user.photo} alt='not source' className="avatar" />
+                    <Link to={`/avatar/${user.id}`} >
+                        <img src={user.avatar == null ? `/Defaultavatar.png` : `../images/${user.avatar}`} alt='not source' className="avatar" />
                     </Link>
                 </div>
                 <div className="list">

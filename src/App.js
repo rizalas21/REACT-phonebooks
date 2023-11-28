@@ -6,20 +6,28 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function App() {
-
   const [item, setItem] = useState([])
   const [user, setUser] = useState({ name: '', phone: '' })
-  const [avatar, setAvatar] = useState({ avatar: '' })
+  const [avatar, setAvatar] = useState(null)
+  const formData = new FormData()
+  const [keyword, setKeyword] = useState(' ')
+  const [sort, setSort] = useState('asc')
+
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/phonebooks')
+    axios.get(`http://localhost:3001/api/phonebooks`, {
+      params: {
+        keyword: keyword.keyword,
+        sort: sort.sort
+      }
+    })
       .then((response) => {
         if (response.data.phonebooks) setItem(response.data.phonebooks)
       })
       .catch(error => {
         console.error('Error fetching data:', error.message)
       })
-  }, [])
+  }, [keyword, sort])
 
   function DeleteItem(userId) {
     axios.delete(`http://localhost:3001/api/phonebooks/${userId}`)
@@ -35,8 +43,10 @@ export default function App() {
           return [
             ...prevData.filter(data => data.id !== response.data.id),
             {
+              id: response.data.id,
               name: response.data.name,
-              phone: response.data.phone
+              phone: response.data.phone,
+              avatar: response.data.avatar
             }
           ]
         })
@@ -47,19 +57,21 @@ export default function App() {
   }
 
 
-  const UpdateAvatar = (id, { avatar }) => {
-    const formData = new FormData()
-      .formData.append("avatar", avatar)
+  const UpdateAvatar = (id, avatar) => {
+    formData.append('avatar', avatar)
     axios.put(`http://localhost:3001/api/phonebooks/${id}/avatar`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data"
-      }
+        "Content-Type": "multipart/form-data",
+      },
     })
       .then((response) => {
-        setAvatar((avatar) => {
+        setItem((prevData) => {
           return [
-            ...avatar,
+            ...prevData.filter(data => data.id !== response.data.id),
             {
+              id: response.data.id,
+              name: response.data.name,
+              phone: response.data.phone,
               avatar: response.data.avatar
             }
           ]
@@ -81,10 +93,14 @@ export default function App() {
             setUser={setUser}
             item={item}
             setItem={setItem}
+            keyword={keyword}
+            setKeyword={setKeyword}
+            sort={sort}
+            setSort={setSort}
           />
         } />
-        <Route path="/add" element={<PhoneAdd user={user} setUser={setUser} />} />
-        <Route path="/avatar" element={<Avatar UpdateAvatar={UpdateAvatar} />} />
+        <Route path="/add" element={<PhoneAdd user={user} setUser={setUser} item={item} setItem={setItem} />} />
+        <Route path="/avatar/:id" element={<Avatar UpdateAvatar={UpdateAvatar} user={user} avatar={avatar} setAvatar={setAvatar} item={item} />} />
       </Routes>
     </Router>
   </>

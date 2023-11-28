@@ -21,7 +21,7 @@ function ButtonCancel() {
 }
 
 
-export default function PhoneAdd({ user, setUser }) {
+export default function PhoneAdd({ user, setUser, item, setItem }) {
     let navigate = useNavigate()
 
     const AddData = (e) => {
@@ -29,12 +29,15 @@ export default function PhoneAdd({ user, setUser }) {
         axios.post('http://localhost:3001/api/phonebooks', {
             ...user
         }).then((response) => {
-            setUser((prevData) => {
-                return [...prevData, {
-                    id: response.data.id,
-                    name: response.data.name,
-                    phone: response.data.phone
-                }]
+            setItem((item) => {
+                return [
+                    ...item.filter(data => data.id !== response.data.id),
+                    {
+                        id: response.data.id,
+                        name: response.data.name,
+                        phone: response.data.phone
+                    }
+                ]
             })
             navigate('/')
         }).catch((err) => {

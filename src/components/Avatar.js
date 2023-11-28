@@ -1,32 +1,59 @@
 import { faFloppyDisk, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import axios from "axios"
 
-export default function Avatar({UpdateAvatar}) {
-   
+export default function Avatar({ UpdateAvatar, avatar, setAvatar }) {
+    const { id } = useParams()
+    let navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/api/phonebooks/${id}`);
+                const avatar = response.data.avatar;
+                setAvatar(avatar);
+            } catch (error) {
+                console.error("Error fetching item data:", error);
+            }
+        };
+
+        fetchData();
+    }, [id]);
+
+    const submitAvatar = (e) => {
+        e.preventDefault()
+        UpdateAvatar(id, avatar)
+        navigate('/')
+    }
+
     return (
         <div className="body">
             <div className="container-edit">
                 <div className="h1-wrapper">
                     <h1>Change Avatar</h1>
                 </div>
-                <form onSubmit={() => UpdateAvatar()} className="form-edit" enctype="multipart/form-data">
+                <form onSubmit={submitAvatar} className="form-edit" >
                     <div className="img-avatar">
-                        <label for="avatar" className="avatar-label">Avatar</label>
-                        <input type="file" name="avatar" className="form-control" id="avatar" placeholder="Choose File" />
+                        <label htmlFor="avatar" className="avatar-label">Avatar</label>
+                        <input type="file" name="avatar" className="form-control" id="avatar" placeholder="Choose File" onChange={(event) => {
+                            setAvatar(event.target.files[0]);
+                        }} />
                     </div>
                     <div className="container-preview">
-                        <label for="preview" className="preview">Preview</label>
+                        <label htmlFor="preview" className="preview">Preview</label>
                         <div className="input-avatar">
-                            <img src="./foto-profil-merokok.webp" alt="avatar" className="img-thumbnail" />
+                            <img src={avatar == null ? `../Defaultavatar.png` : `../images/${avatar}`} alt="only see avatar if it has been upload" className="img-thumbnail" />
                         </div>
                     </div>
 
                     <div className="save-cancel-edit">
                         <div className="button-save">
-                            <button type="submit" className="btn button-submit"> <FontAwesomeIcon icon={faFloppyDisk} /></button>
+                            <button type="submit" className="btn button-submit"><FontAwesomeIcon icon={faFloppyDisk} /></button>
                         </div>
                         <div>
-                            <a href="/" className="btn button-cancel"> <FontAwesomeIcon icon={faRotateLeft} /></a>
+                            <a href="/" className="btn button-cancel"><FontAwesomeIcon icon={faRotateLeft} /></a>
                         </div>
                     </div>
                 </form>

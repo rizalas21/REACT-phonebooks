@@ -5,15 +5,17 @@ export default function PhoneBox(
     {
         Delete,
         UpdateData,
-        user,
-        setUser,
+        keyword,
+        setKeyword,
         item,
-        setItem
+        setItem,
+        sort,
+        setSort
     }
 ) {
     return (
         <>
-            <SearchBar />
+            <SearchBar keyword={keyword} setKeyword={setKeyword} sort={sort} setSort={setSort} />
             <PhoneList
                 UpdateData={UpdateData}
                 Delete={Delete}
