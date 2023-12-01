@@ -10,7 +10,11 @@ export default function PhoneBox(
         item,
         setItem,
         sort,
-        setSort
+        setSort,
+        isLoading,
+        setIsLoading,
+        page,
+        setPage
     }
 ) {
     return (
@@ -21,6 +25,10 @@ export default function PhoneBox(
                 Delete={Delete}
                 item={item}
                 setItem={setItem}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                page={page}
+                setPage={setPage}
             />
         </>
     )

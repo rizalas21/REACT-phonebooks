@@ -12,22 +12,41 @@ export default function App() {
   const formData = new FormData()
   const [keyword, setKeyword] = useState(' ')
   const [sort, setSort] = useState('asc')
+  const [isLoading, setIsLoading] = useState(false)
+  const [page, setPage] = useState(1)
 
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
+      setPage(page + 1);
+    }
+  }
 
   useEffect(() => {
+    setIsLoading(true)
+
+    window.addEventListener('scroll', handleScroll);
+
     axios.get(`http://localhost:3001/api/phonebooks`, {
       params: {
         keyword: keyword.keyword,
-        sort: sort.sort
-      }
+        sort: sort.sort,
+        page: page
+      },
     })
       .then((response) => {
-        if (response.data.phonebooks) setItem(response.data.phonebooks)
+        console.log('ini page => ', page)
+        console.log(response)
+        if (response.data.phonebooks) {
+          console.log('response', response.data.phonebooks)
+          setItem(item.concat(response.data.phonebooks))
+        }
+        setIsLoading(false)
+        return () => window.removeEventListener('scroll', handleScroll)
       })
       .catch(error => {
         console.error('Error fetching data:', error.message)
       })
-  }, [keyword, sort])
+  }, [keyword, sort, page])
 
   function DeleteItem(userId) {
     axios.delete(`http://localhost:3001/api/phonebooks/${userId}`)
@@ -55,7 +74,6 @@ export default function App() {
         console.log('ini error bro update', e)
       })
   }
-
 
   const UpdateAvatar = (id, avatar) => {
     formData.append('avatar', avatar)
@@ -97,6 +115,10 @@ export default function App() {
             setKeyword={setKeyword}
             sort={sort}
             setSort={setSort}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            page={page}
+            setPage={setPage}
           />
         } />
         <Route path="/add" element={<PhoneAdd user={user} setUser={setUser} item={item} setItem={setItem} />} />
