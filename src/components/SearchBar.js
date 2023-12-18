@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 function BtnAsc({ sort, setSort }) {
     return (
         <button className="btn-icon" onClick={() => {
-            setSort({ sort: 'desc' })
+            setSort('desc')
         }}>
             <FontAwesomeIcon icon={faArrowUpAZ} id="center" />
         </button>
@@ -17,7 +17,7 @@ function BtnAsc({ sort, setSort }) {
 function BtnDesc({ sort, setSort }) {
     return (
         <button className="btn-icon" onClick={() => {
-            setSort({ sort: 'asc' })
+            setSort('asc')
         }}>
             <FontAwesomeIcon icon={faArrowDownZA} id="center" />
         </button>
@@ -32,7 +32,13 @@ function BtnAdd() {
     )
 }
 
-export default function SearchBar({ keyword, setKeyword, sort, setSort }) {
+
+export default function SearchBar({ keyword, setKeyword, sort, setSort}) {
+    const handleSearchChange = (event) => {
+        const { value } = event.target
+        setKeyword(value)
+    }
+    console.log('ini sort => ', sort)
     return (
         <div className="all">
             <div className="container-search">
@@ -43,12 +49,7 @@ export default function SearchBar({ keyword, setKeyword, sort, setSort }) {
                     <button className="button-search">
                         <FontAwesomeIcon icon={faMagnifyingGlass} id="input-icon" />
                     </button>
-                    <input type="text" aria-describedby="basic-addon1" id="input-field" onInput={(e) => {
-                        setKeyword((prevKeyword) => ({
-                            ...prevKeyword,
-                            keyword: e.target.value
-                        }))
-                    }} />
+                    <input type="text" value={keyword} onInput={handleSearchChange} aria-describedby="basic-addon1" id="input-field" />
                 </div>
                 <div className="icon">
                     <Link to={"/add"}>

@@ -19,7 +19,7 @@ export default function PhoneBox(
 ) {
     return (
         <>
-            <SearchBar keyword={keyword} setKeyword={setKeyword} sort={sort} setSort={setSort} />
+            <SearchBar keyword={keyword} setKeyword={setKeyword} sort={sort} setSort={setSort}  />
             <PhoneList
                 UpdateData={UpdateData}
                 Delete={Delete}

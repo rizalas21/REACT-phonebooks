@@ -21,7 +21,7 @@ function ButtonCancel() {
 }
 
 
-export default function PhoneAdd({ user, setUser, item, setItem }) {
+export default function PhoneAdd({ user, setUser, item, setItem, sort, setSort }) {
     let navigate = useNavigate()
 
     const AddData = (e) => {

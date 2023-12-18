@@ -3,50 +3,85 @@ import PhoneBox from "./components/PhoneBox";
 import PhoneAdd from "./components/PhoneAdd";
 import Avatar from "./components/Avatar";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function App() {
   const [item, setItem] = useState([])
   const [user, setUser] = useState({ name: '', phone: '' })
   const [avatar, setAvatar] = useState(null)
   const formData = new FormData()
-  const [keyword, setKeyword] = useState(' ')
+  const [keyword, setKeyword] = useState('')
   const [sort, setSort] = useState('asc')
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
-      setPage(page + 1);
+
+  const handleScroll = async () => {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !isLoading) {
+      console.log('page => ', page, 'total totalPages => ', totalPages)
+      try {
+        if (page < totalPages) {
+          setIsLoading(true)
+          const newPage = page + 1
+          setPage(newPage);
+          const dataBaru = await axios.get(`http://localhost:3001/api/phonebooks`, {
+            params: {
+              page: newPage
+            }
+          })
+          console.log('ini adlah dataBaru => ', dataBaru)
+          setItem(prevItem => [...prevItem, ...dataBaru.data.phonebooks])
+        }
+        else {
+          setIsLoading(false)
+          console.log('gak nambah wleee')
+        }
+      }
+      catch (err) {
+        console.log(err)
+      } finally {
+        setIsLoading(false)
+      }
     }
   }
 
   useEffect(() => {
-    setIsLoading(true)
-
     window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [totalPages, page])
 
-    axios.get(`http://localhost:3001/api/phonebooks`, {
-      params: {
-        keyword: keyword.keyword,
-        sort: sort.sort,
-        page: page
-      },
-    })
-      .then((response) => {
-        console.log('ini page => ', page)
-        console.log(response)
-        if (response.data.phonebooks) {
-          console.log('response', response.data.phonebooks)
-          setItem(item.concat(response.data.phonebooks))
+  useEffect(() => {
+    const readData = async () => {
+      try {
+        console.log('ini adalah keyword => ', keyword)
+        const response = await axios.get(`http://localhost:3001/api/phonebooks`, {
+          params: {
+            keyword: keyword,
+            sort: sort
+          }
+        })
+        console.log('masuk => ', response)
+        const { phonebooks, pages } = response.data
+        console.log('ini phonebooks', phonebooks)
+        if (phonebooks) {
+          console.log('pages readData ', pages)
+          setItem(phonebooks)
+          setTotalPages(pages)
         }
+        return
+      } catch (err) {
+        console.log(err)
+      } finally {
         setIsLoading(false)
-        return () => window.removeEventListener('scroll', handleScroll)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error.message)
-      })
-  }, [keyword, sort, page])
+      }
+    }
+    readData()
+
+  }, [keyword, sort])
+
 
   function DeleteItem(userId) {
     axios.delete(`http://localhost:3001/api/phonebooks/${userId}`)
@@ -121,7 +156,7 @@ export default function App() {
             setPage={setPage}
           />
         } />
-        <Route path="/add" element={<PhoneAdd user={user} setUser={setUser} item={item} setItem={setItem} />} />
+        <Route path="/add" element={<PhoneAdd user={user} setUser={setUser} item={item} setItem={setItem} sort={sort} setSort={setSort} />} />
         <Route path="/avatar/:id" element={<Avatar UpdateAvatar={UpdateAvatar} user={user} avatar={avatar} setAvatar={setAvatar} item={item} />} />
       </Routes>
     </Router>
