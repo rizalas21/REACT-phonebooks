@@ -19,7 +19,6 @@ export default function App() {
 
   const handleScroll = async () => {
     if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight && !isLoading) {
-      console.log('page => ', page, 'total totalPages => ', totalPages)
       try {
         if (page < totalPages) {
           setIsLoading(true)
@@ -30,12 +29,10 @@ export default function App() {
               page: newPage
             }
           })
-          console.log('ini adlah dataBaru => ', dataBaru)
           setItem(prevItem => [...prevItem, ...dataBaru.data.phonebooks])
         }
         else {
           setIsLoading(false)
-          console.log('gak nambah wleee')
         }
       }
       catch (err) {
@@ -56,18 +53,14 @@ export default function App() {
   useEffect(() => {
     const readData = async () => {
       try {
-        console.log('ini adalah keyword => ', keyword)
         const response = await axios.get(`http://localhost:3001/api/phonebooks`, {
           params: {
             keyword: keyword,
             sort: sort
           }
         })
-        console.log('masuk => ', response)
         const { phonebooks, pages } = response.data
-        console.log('ini phonebooks', phonebooks)
         if (phonebooks) {
-          console.log('pages readData ', pages)
           setItem(phonebooks)
           setTotalPages(pages)
         }
