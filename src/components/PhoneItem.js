@@ -3,8 +3,25 @@ import '../app.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFloppyDisk, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function PhoneItem({ user, remove, update }) {
+    const submit = (user) => {
+        confirmAlert({
+            title: 'CONFIRM TO DELETE',
+            message: `Are you sure to delete this contact ${user.name}`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => remove(user.id)
+                },
+                {
+                    label: 'No'
+                }
+            ]
+        });
+    };
     const [isEdit, setIsEdit] = useState(false)
     const [newData, setNewData] = useState({ name: user.name, phone: user.phone })
 
@@ -46,7 +63,7 @@ export default function PhoneItem({ user, remove, update }) {
                         <button className="btn-edit" onClick={() => setIsEdit(!isEdit)}>
                             <FontAwesomeIcon icon={faPenToSquare} />
                         </button>&nbsp;
-                        <button className="btn-delete" onClick={() => remove(user.id)} >
+                        <button className="btn-delete" onClick={() => submit(user)} >
                             <FontAwesomeIcon icon={faTrashCan} />
                         </button>
                     </div>
